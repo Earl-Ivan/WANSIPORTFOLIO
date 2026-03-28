@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earl Ivan L. Miranda - Portfolio</title>
+    <style>
+        
+        /* RESET & BASE */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a1a2e 50%, #16213e 100%);
+            color: #e8e8e8;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            cursor: none;
+        }
+
+        /* MOUSE CURSOR GLOW */
+        .cursor-glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(77, 166, 255, 0.25) 0%, rgba(138, 43, 226, 0.15) 30%, transparent 70%);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            transition: opacity 0.3s ease;
+            mix-blend-mode: screen;
+        }
+
+        .cursor-dot {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: #4da6ff;
+            border-radius: 50%;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 10000;
+            box-shadow: 0 0 10px #4da6ff, 0 0 20px #4da6ff;
+        }
+
+        /* ATOMS BACKGROUND CANVAS */
+        #atomsCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* CONTAINER */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+}
+        /* HERO SECTION */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 40px 20px;
+        }
+
+        .profile-container {
+            position: relative;
+            margin-bottom: 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .profile-ring {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4da6ff, #8a2be2);
+            padding: 5px;
+            box-shadow: 0 0 40px rgba(77, 166, 255, 0.6);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 40px rgba(77, 166, 255, 0.6); }
+            50% { box-shadow: 0 0 60px rgba(138, 43, 226, 0.8); }
+        }
+
+        .profile-ring img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #0a0a0f;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4da6ff, #8a2be2, #4da6ff);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient 3s ease infinite, slideUp 1s ease-out;
+            margin-bottom: 20px;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            color: #b8b8b8;
+            margin-bottom: 30px;
+            animation: slideUp 1s ease-out 0.2s both;
+        }
+
+        .info-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            animation: slideUp 1s ease-out 0.4s both;
+        }
+
+        .badge {
+            background: rgba(77, 166, 255, 0.1);
+            border: 1px solid rgba(77, 166, 255, 0.3);
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .badge:hover {
+            background: rgba(77, 166, 255, 0.2);
+            border-color: rgba(77, 166, 255, 0.6);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(77, 166, 255, 0.3);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        /* SECTION STYLES */
+        section {
+            padding: 80px 20px;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 1s ease-out forwards;
+            animation-timeline: view();
+            animation-range: entry 0% cover 30%;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 50px;
+            background: linear-gradient(135deg, #4da6ff, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+        }
+
+        h2::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #4da6ff, #8a2be2);
+            border-radius: 2px;
+        }
+
+        /* CARD STYLES */
+        .card {
+            background: rgba(26, 26, 46, 0.6);
+            border: 1px solid rgba(77, 166, 255, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(77, 166, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(77, 166, 255, 0.5);
+            box-shadow: 0 20px 60px rgba(77, 166, 255, 0.2);
+        }
+
+        /* GRID LAYOUTS */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+        }
+
+        /* LIST STYLES */
+        .styled-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .styled-list li {
+            padding: 15px;
+            margin-bottom: 10px;
+            background: rgba(77, 166, 255, 0.05);
+            border-left: 3px solid #4da6ff;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .styled-list li:hover {
+            background: rgba(77, 166, 255, 0.1);
+            transform: translateX(10px);
+            border-left-color: #8a2be2;
+        }
+
+        /* PROJECT CARDS */
+        .project-card {
+            background: rgba(26, 26, 46, 0.6);
+            border: 1px solid rgba(77, 166, 255, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-card::after {
+            content: "→";
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            color: #4da6ff;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(77, 166, 255, 0.6);
+            box-shadow: 0 15px 40px rgba(77, 166, 255, 0.3);
+        }
+
+        .project-card:hover::after {
+            opacity: 1;
+            right: 15px;
+        }
+
+        .project-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #4da6ff, #8a2be2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        /* LINKS */
+        a {
+            color: #4da6ff;
+            text-decoration: none;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        a::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #4da6ff, #8a2be2);
+            transition: width 0.3s ease;
+        }
+
+        a:hover {
+            color: #8a2be2;
+        }
+
+        a:hover::after {
+            width: 100%;
+        }
+
+        /* SOCIAL BUTTONS */
+        .social-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .social-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-btn::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .social-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .social-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-facebook {
+            background: linear-gradient(135deg, #4267B2, #1877F2);
+            color: white;
+            box-shadow: 0 5px 20px rgba(66, 103, 178, 0.4);
+        }
+
+        .btn-facebook:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 40px rgba(66, 103, 178, 0.6);
+        }
+
+        .btn-tiktok {
+            background: linear-gradient(135deg, #000000, #00f2ea);
+            color: white;
+            box-shadow: 0 5px 20px rgba(0, 242, 234, 0.4);
+        }
+
+        .btn-tiktok:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 40px rgba(0, 242, 234, 0.6);
+        }
+
+        /* SKILL BADGES */
+        .skill-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+            background: rgba(77, 166, 255, 0.05);
+            border-radius: 15px;
+            border: 1px solid rgba(77, 166, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .skill-item:hover {
+            background: rgba(77, 166, 255, 0.1);
+            border-color: rgba(77, 166, 255, 0.4);
+            transform: translateX(10px);
+        }
+
+        .skill-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #4da6ff, #8a2be2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        /* SEPARATOR */
+        hr {
+            border: none;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(77, 166, 255, 0.5), transparent);
+            margin: 60px 0;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid rgba(77, 166, 255, 0.2);
+            color: #888;
+        }
+
+        /* COMING SOON BADGE */
+        .coming-soon {
+            display: inline-block;
+            background: linear-gradient(135deg, #8a2be2, #4da6ff);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1.2rem; }
+            h2 { font-size: 2rem; }
+            .grid, .grid-2 { grid-template-columns: 1fr; }
+            .info-badges { flex-direction: column; align-items: center; }
+        }
+
+        /* SCROLL TO TOP BUTTON */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #4da6ff, #8a2be2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            text-decoration: none;
+            box-shadow: 0 5px 20px rgba(77, 166, 255, 0.5);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 10px 30px rgba(77, 166, 255, 0.7);
+        }
+
+        /* LANGUAGE LOGOS */
+        .language-logos {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .language-logo {
+            transition: transform 0.3s ease, filter 0.3s ease;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .language-logo:hover {
+            transform: scale(1.1) rotate(5deg);
+            filter: brightness(1.2);
+        }
+
+        /* SCROLL PROGRESS BAR */
+#scrollProgress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 6px;
+    background: linear-gradient(90deg, #4da6ff, #8a2be2);
+    z-index: 9999;
+    border-radius: 0 0 5px 5px;
+}
+
+/* FLOATING SIDE NAVIGATION */
+#sideNav {
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    z-index: 9998;
+}
+
+#sideNav ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#sideNav ul li {
+    width: 40px;
+    height: 40px;
+    background: rgba(77, 166, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 1.2rem;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#sideNav ul li span {
+    position: absolute;
+    right: 50px;
+    background: rgba(0,0,0,0.7);
+    padding: 5px 10px;
+    border-radius: 10px;
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+}
+
+#sideNav ul li:hover span,
+#sideNav ul li.active span {
+    opacity: 1;
+}
+
+#sideNav ul li.active {
+    background: #4da6ff;
+    box-shadow: 0 0 15px #4da6ff, 0 0 25px #8a2be2;
+}
+
+/* MOBILE NAVIGATION */
+#mobileNavToggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    font-size: 2rem;
+    color: #4da6ff;
+    z-index: 10000;
+    cursor: pointer;
+    display: none;
+}
+
+#mobileNav {
+    position: fixed;
+    top: 0;
+    right: -250px;
+    width: 250px;
+    height: 100%;
+    background: rgba(26, 26, 46, 0.95);
+    backdrop-filter: blur(10px);
+    transition: right 0.3s ease;
+    z-index: 9999;
+    padding-top: 80px;
+}
+
+#mobileNav ul {
+    list-style: none;
+    padding: 0 20px;
+}
+
+#mobileNav ul li {
+    padding: 15px 10px;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    color: #4da6ff;
+    cursor: pointer;
+}
+
+#mobileNav.open {
+    right: 0;
+}
+
+/* RESPONSIVE */
+@media(max-width: 768px) {
+    #sideNav { display: none; }
+    #mobileNavToggle { display: block; }
+}
+    </style>
+</head>
+<body>
+
+    
+    <!-- TOP SCROLL PROGRESS BAR -->
+    <div id="scrollProgress"></div>
+
+    <!-- FLOATING SIDE NAVIGATION -->
+    <nav id="sideNav">
+        <ul>
+            <li data-target="home" class="active">🏠<span>Home</span></li>
+            <li data-target="about">🌟<span>About Me</span></li>
+            <li data-target="education">🎓<span>Education</span></li>
+            <li data-target="languages">📜<span>Languages</span></li>
+            <li data-target="projects">💻<span>Projects</span></li>
+            <li data-target="fun">⚡<span>Fun Facts</span></li>
+            <li data-target="skills">📌<span>Skills</span></li>
+            <li data-target="connect">📞<span>Connect</span></li>
+        </ul>
+    </nav>
+
+    <!-- MOBILE HAMBURGER MENU -->
+    <div id="mobileNavToggle">☰</div>
+    <div id="mobileNav">
+        <ul>
+            <li data-target="home">🏠 Home</li>
+            <li data-target="about">🌟 About Me</li>
+            <li data-target="education">🎓 Education</li>
+            <li data-target="languages">📜 Languages</li>
+            <li data-target="projects">💻 Projects</li>
+            <li data-target="fun">⚡ Fun Facts</li>
+            <li data-target="skills">📌 Skills</li>
+            <li data-target="connect">📞 Connect</li>
+        </ul>
+    </div>
+
+    <!-- HERO SECTION -->
+    <div class="hero">
+        <div class="profile-container">
+            <div class="profile-ring">
+                <img src="images/yes.jpg" alt="Earl Ivan L. Miranda">
+            </div>
+        </div>
+        
+        <h1>EARL IVAN L. MIRANDA</h1>
+        <p>Future Information Technologist | Tech Enthusiast | Developer</p>
+        
+        <div class="info-badges">
+            <div class="badge">📍 Blk.56 Lot 27 52st. M.R.C, Mabalacat City, Pampanga</div>
+            <div class="badge">📞 +639922571324</div>
+            <div class="badge">✉️ <a href="ivanllaneta22@gmail.com" style="color: inherit;">ivanllaneta22@gmail.com</a></div>
+        </div>
+        
+        <div class="scroll-indicator">
+            <span style="font-size: 2rem;">↓</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- WELCOME -->
+        <section>
+            <div class="card">
+                <p style="font-size: 1.2rem; text-align: center; line-height: 1.8;">
+                    <strong style="color: #4da6ff; font-size: 1.4rem;">Welcome to my Portfolio!</strong><br>
+                    This portfolio holds my details that demonstrate my skills in data organization, management, and handling based on what I have learned in class.
+                </p>
+            </div>
+        </section>
+
+        <!-- ABOUT ME -->
+        <section id="about">
+            <h2>🌟 About Me</h2>
+            <div class="card">
+                <p style="font-size: 1.1rem; margin-bottom: 30px;">
+                    Greetings! I'm Earl Ivan, your future computer engineer. I'm 18 years old, born on September 22, 2007. 
+                    I live in Mawaque Resettlement, Mabalacat City, and I'm passionate about how technologies work. 
+                    My hobbies include watching movies, anime, and reading. I also love playing mobile games such as Mobile Legends, 
+                    CODM, and many more.
+                </p>
+
+                <div class="grid-2">
+                    <div>
+                        <h3 style="color: #4da6ff; margin-bottom: 20px; font-size: 1.5rem;">What I Believe In</h3>
+                        <ul class="styled-list">
+                            <li>🤝 Believe that mistakes are part of learning, not failure</li>
+                            <li>💪 Grades do not define your worth</li>
+                            <li>🙏 I Believe that God is our Lord and Savior</li>
+                            <li>📖 I Believe that progress matters more than perfection</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 style="color: #8a2be2; margin-bottom: 20px; font-size: 1.5rem;">I Love</h3>
+                        <ul class="styled-list">
+                            <li>🎮 Playing video games and grinding for hours</li>
+                            <li>🎧 Listening to music while working</li>
+                            <li>📺 Watching Movies and Series</li>
+                            <li>😂 Sharing memes, experiences, and funny coding moments</li>
+                            <li>🚓 Luxury cars</li>
+                            <li>🏞️ Nature trip</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="margin-top: 30px; padding: 25px; background: rgba(77, 166, 255, 0.1); border-radius: 15px; border: 1px solid rgba(77, 166, 255, 0.3);">
+                    <p style="font-size: 1.05rem;">
+                        I am a curious and eager learner who works hard even when lessons are challenging. I take responsibility 
+                        for completing my tasks on time, stay open to feedback and new ideas, and remain persistent when I make mistakes. 
+                        I manage my time and work in an organized way and show respect toward my teachers and classmates.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- EDUCATION -->
+        <section id="education">
+            <h2>🎓 Education</h2>
+            <div class="grid">
+                <div class="card">
+                    <div class="project-number">🎓</div>
+                    <h3 style="color: #4da6ff; margin-bottom: 10px;">Senior High School</h3>
+                    <p style="font-size: 1.1rem;">CHILDREN OF FATIMA SCHOOL INCORPORATED</p>
+                    <span class="badge" style="margin-top: 15px;">ICT Strand</span>
+                </div>
+
+                <div class="card">
+                    <div class="project-number">📚</div>
+                    <h3 style="color: #4da6ff; margin-bottom: 10px;">Junior High School</h3>
+                    <p style="font-size: 1.1rem;">MAWAQUE RESETTLEMENT HIGH SCHOOL</p>
+                </div>
+
+                <div class="card">
+                    <div class="project-number">✏️</div>
+                    <h3 style="color: #4da6ff; margin-bottom: 10px;">Elementary</h3>
+                    <p style="font-size: 1.1rem;">MAWAQUE RESETTLEMENT ELEMENTARY SCHOOL</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- LANGUAGES -->
+        <section id="languages">
+            <h2>📜 Languages I Used Before</h2>
+            <div class="language-logos">
+                <img src="images/jav1.jpg" class="language-logo" width="120" height="80" alt="Java">
+                <img src="images/python.jpg" class="language-logo" width="120" height="80" alt="Python">
+            </div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section id="projects">
+            <h2>💻 My Projects</h2>
+            
+            <h3 style="color: #4da6ff; font-size: 1.8rem; margin-bottom: 30px; text-align: center;">🧪 Midterm</h3>
+            <div class="grid">
+                <a href="resume.html" class="project-card">
+                    <span class="project-number">1</span>
+                    <h4 style="font-size: 1.2rem; margin-bottom: 10px;">Midterm Lab Task 1</h4>
+                    <p style="color: #888;">📂 RESUME</p>
+                </a>
+
+                <a href="order.html" class="project-card">
+                    <span class="project-number">2</span>
+                    <h4 style="font-size: 1.2rem; margin-bottom: 10px;">Midterm Lab Task 2</h4>
+                    <p style="color: #888;">📂 UNORDERED AND ORDERED LISTS</p>
+                </a>
+
+                <a href="labtask3.html" class="project-card">
+                    <span class="project-number">3</span>
+                    <h4 style="font-size: 1.2rem; margin-bottom: 10px;">Midterm Lab Task 3</h4>
+                    <p style="color: #888;">📂 REQUEST FOR PROPOSAL</p>
+                </a>
+
+                <a href="labtask4.html" class="project-card">
+                    <span class="project-number">4</span>
+                    <h4 style="font-size: 1.2rem; margin-bottom: 10px;">Midterm Lab Task 4</h4>
+                    <p style="color: #888;">📂 IMAGE MAP</p>
+                </a>
+
+                <a href="labtask5.html" class="project-card">
+                    <span class="project-number">5</span>
+                    <h4 style="font-size: 1.2rem; margin-bottom: 10px;">Midterm Lab Task 5</h4>
+                    <p style="color: #888;">📂 RESUME WITH INTERNAL CSS</p>
+                </a>
+
+                <a href="labtask6.html" class="project-card">
+                    <span class="project-number">6</span>
+                    <h4 style="font-size: 1.2rem; margin-bottom: 10px;">Midterm Lab Task 6</h4>
+                    <p style="color: #888;">📂 DISPLAY PROPERTY</p>
+                </a>
+
+                <a href="labtask7.html" class="project-card">
+                    <span class="project-number">7</span>
+                    <h4 style="font-size: 1.2rem; margin-bottom: 10px;">Midterm Lab Task 7</h4>
+                    <p style="color: #888;">📂 SEMANTIC CSS</p>
+                </a>
+
+                <a href="labtask8.html" class="project-card">
+                    <span class="project-number">8</span>
+                    <h4 style="font-size: 1.2rem; margin-bottom: 10px;">Midterm Lab Task 8</h4>
+                    <p style="color: #888;">📂 CSS LAYOUT</p>
+                </a>
+            </div>
+
+            <hr>
+
+            <h3 style="color: #8a2be2; font-size: 1.8rem; margin-bottom: 30px; text-align: center;">🎓 Finals</h3>
+            <div class="card" style="text-align: center; background: linear-gradient(135deg, rgba(77, 166, 255, 0.1), rgba(138, 43, 226, 0.1));">
+                <h4 style="font-size: 1.3rem; margin-bottom: 15px;">Final Lab Task 1</h4>
+                <p style="margin-bottom: 10px;">📂 <a href="finaltask1.html">CSS POSITION</a></p>
+                <p style="color: #888; margin-bottom: 20px;">Final Lab Tasks 2-5 are in progress</p>
+                <span class="coming-soon">🔥 Coming Soon...</span>
+            </div>
+        </section>
+
+        <!-- FUN FACTS -->
+        <section id="fun">
+            <h2>⚡ Fun Facts About Me</h2>
+            <div class="grid">
+                <div class="card">
+                    <div style="font-size: 3rem; text-align: center; margin-bottom: 15px;">💩</div>
+                    <p style="text-align: center; font-size: 1.1rem;">I take a long time pooping than <strong>taking a shower</strong></p>
+                </div>
+
+                <div class="card">
+                    <div style="font-size: 3rem; text-align: center; margin-bottom: 15px;">🏍️</div>
+                    <p style="text-align: center; font-size: 1.1rem;">I love strolling especially with my friends</p>
+                </div>
+
+                <div class="card">
+                    <div style="font-size: 3rem; text-align: center; margin-bottom: 15px;">👨🏿‍🔧</div>
+                    <p style="text-align: center; font-size: 1.1rem;">I wanna be a <strong>Businessman</strong> to buy what I want</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SKILLS -->
+        <section id="skills">
+            <h2>📌 Skills</h2>
+            <div class="grid">
+                <div class="skill-item">
+                    <div class="skill-icon">😊</div>
+                    <span style="font-size: 1.1rem;">I can make you happy</span>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-icon">🧠</div>
+                    <span style="font-size: 1.1rem;">I think critically and solve problems effectively</span>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-icon">👂</div>
+                    <span style="font-size: 1.1rem;">Good Listener</span>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-icon">🧘</div>
+                    <span style="font-size: 1.1rem;">Patience</span>
+                </div>
+
+                <div class="skill-item">
+                    <div class="skill-icon">🔄</div>
+                    <span style="font-size: 1.1rem;">Adaptability</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONNECT -->
+        <section id="connect">
+            <h2>📞 Let's Connect!</h2>
+            <div class="card" style="text-align: center; background: linear-gradient(135deg, rgba(77, 166, 255, 0.1), rgba(138, 43, 226, 0.1)); padding: 50px 30px;">
+                <p style="font-size: 1.3rem; margin-bottom: 30px;">Click below to connect with me on social media!</p>
+                
+                <div class="social-buttons">
+                    <a href="https://www.facebook.com/earl.ivan.9" target="_blank" class="social-btn btn-facebook">
+                        <span>Facebook</span>
+                    </a>
+                    
+                    <a href="https://www.tiktok.com/@ivnfznx?_r=1&_t=ZS-93Yku11rAdp" target="_blank" class="social-btn btn-tiktok">
+                        <span>TikTok</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <p style="font-size: 1.1rem; margin-bottom: 10px;">Built with passion and dedication ✨</p>
+        <p>© 2026 Earl Ivan L. Miranda. All rights reserved.</p>
+    </footer>
+
+    <!-- SCROLL TO TOP BUTTON -->
+    <a href="#" class="scroll-top">↑</a>
+
+    <!-- MOUSE CURSOR EFFECTS -->
+    <div class="cursor-glow"></div>
+    <div class="cursor-dot"></div>
+
+    <!-- ATOMS CANVAS -->
+    <canvas id="atomsCanvas"></canvas>
+
+    <script>
+        // ========== MOUSE CURSOR GLOW ==========
+        const cursorGlow = document.querySelector('.cursor-glow');
+        const cursorDot = document.querySelector('.cursor-dot');
+
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.left = e.clientX + 'px';
+            cursorGlow.style.top = e.clientY + 'px';
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
+        });
+
+        document.addEventListener('mouseenter', () => {
+            cursorGlow.style.opacity = '1';
+            cursorDot.style.opacity = '1';
+        });
+
+        document.addEventListener('mouseleave', () => {
+            cursorGlow.style.opacity = '0';
+            cursorDot.style.opacity = '0';
+        });
+
+        // Show default cursor on links and buttons
+        document.querySelectorAll('a, button, .card, .project-card').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                el.style.cursor = 'pointer';
+            });
+        });
+
+        // ========== ANIMATED ATOMS BACKGROUND ==========
+        const canvas = document.getElementById('atomsCanvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Atom particle class
+        class Atom {
+            constructor() {
+                this.reset();
+                this.y = Math.random() * canvas.height;
+                this.opacity = Math.random() * 0.5 + 0.2;
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = -10;
+                this.radius = Math.random() * 2 + 1;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = Math.random() * 0.3 + 0.2;
+                this.color = Math.random() > 0.5 ? '77, 166, 255' : '138, 43, 226';
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Wrap around horizontally
+                if (this.x < 0) this.x = canvas.width;
+                if (this.x > canvas.width) this.x = 0;
+
+                // Reset if goes below screen
+                if (this.y > canvas.height) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                // Draw nucleus (center dot)
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${this.color}, ${this.opacity})`;
+                ctx.fill();
+
+                // Draw electron orbit ring
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius * 6, 0, Math.PI * 2);
+                ctx.strokeStyle = `rgba(${this.color}, ${this.opacity * 0.2})`;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // Draw orbiting electrons
+                const time = Date.now() * 0.001;
+                for (let i = 0; i < 2; i++) {
+                    const angle = time + (i * Math.PI);
+                    const electronX = this.x + Math.cos(angle) * this.radius * 6;
+                    const electronY = this.y + Math.sin(angle) * this.radius * 6;
+                    
+                    ctx.beginPath();
+                    ctx.arc(electronX, electronY, this.radius * 0.5, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${this.color}, ${this.opacity * 0.8})`;
+                    ctx.fill();
+                }
+            }
+        }
+
+        // Create atoms
+        const atoms = [];
+        const atomCount = 50;
+
+        for (let i = 0; i < atomCount; i++) {
+            atoms.push(new Atom());
+        }
+
+        // Connect nearby atoms with lines
+        function connectAtoms() {
+            for (let i = 0; i < atoms.length; i++) {
+                for (let j = i + 1; j < atoms.length; j++) {
+                    const dx = atoms[i].x - atoms[j].x;
+                    const dy = atoms[i].y - atoms[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(atoms[i].x, atoms[i].y);
+                        ctx.lineTo(atoms[j].x, atoms[j].y);
+                        ctx.strokeStyle = `rgba(77, 166, 255, ${0.1 * (1 - distance / 150)})`;
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+
+        // Animation loop
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw connections
+            connectAtoms();
+
+            // Update and draw atoms
+            atoms.forEach(atom => {
+                atom.update();
+                atom.draw();
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+    </script>
+
+
+
+    <script>
+    // SCROLL PROGRESS BAR
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.body.scrollHeight - window.innerHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        document.getElementById('scrollProgress').style.width = scrollPercent + "%";
+    });
+
+    // SMOOTH SCROLL & ACTIVE HIGHLIGHT
+    const sections = document.querySelectorAll('section');
+    const navItems = document.querySelectorAll('#sideNav li');
+    const mobileNavItems = document.querySelectorAll('#mobileNav li');
+
+    function setActiveNav() {
+        let index = sections.length;
+
+        while(--index && window.scrollY + 50 < sections[index].offsetTop) {}
+        
+        navItems.forEach(li => li.classList.remove('active'));
+        navItems[index].classList.add('active');
+    }
+
+    setActiveNav();
+    window.addEventListener('scroll', setActiveNav);
+
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            document.getElementById(item.dataset.target).scrollIntoView({behavior: 'smooth'});
+        });
+    });
+
+    mobileNavItems.forEach(item => {
+        item.addEventListener('click', () => {
+            document.getElementById(item.dataset.target).scrollIntoView({behavior: 'smooth'});
+            document.getElementById('mobileNav').classList.remove('open');
+        });
+    });
+
+    // MOBILE NAV TOGGLE
+    const mobileToggle = document.getElementById('mobileNavToggle');
+    const mobileNav = document.getElementById('mobileNav');
+
+    mobileToggle.addEventListener('click', () => {
+        mobileNav.classList.toggle('open');
+    });
+</script>
+    
+</body>
+</html>
